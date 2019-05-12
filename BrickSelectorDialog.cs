@@ -103,7 +103,7 @@ function BSD_addCategory(%newcat)
 function BSD_addSubCategory(%cat, %newSubCat)
 {
 	%catID = -1.0;
-    for(%i = 0; %i < $BSD_numCategories; %i++)
+	for(%i = 0; %i < $BSD_numCategories; %i++)
 	{
 		if ($BSD_category[%i].name $= %cat)
 			%catID = %i;
@@ -114,7 +114,7 @@ function BSD_addSubCategory(%cat, %newSubCat)
 		return;
 	}
 
-    for(%i = 0; %i < $BSD_category[%catID].numSubCategories; %i++)
+	for(%i = 0; %i < $BSD_category[%catID].numSubCategories; %i++)
 	{
 		if ($BSD_category[%catID].subCategory[%i].name $= %newSubCat)
 			return $BSD_category[%catID].subCategory[%i];
@@ -140,9 +140,9 @@ function BSD_onResize::onResize(%this)
 
 		%skip = 1;
 	}
-    %window = BSD_Window.getID();
-    %x = getWord(%window.extent, 0);
-    %y = getWord(%window.extent, 1);
+	%window = BSD_Window.getID();
+	%x = getWord(%window.extent, 0);
+	%y = getWord(%window.extent, 1);
 	$tmbi_dragenabled = 0;
 
 	$Pref::BSD::LastResolution = %x SPC %y;
@@ -168,7 +168,7 @@ function BSD_onResize::onResize(%this)
 	if(%tmbi)
 	{
 		 //            + 59 + 20 + 5; //= 59(box) + 20(space at bottom) + 156(tmbi scale) + 5 offset
-    	BSD_ScrollBox.extent = %x-6 SPC %y - (getword(TMBI_ScrollBox.getextent(), 1) + 84);
+		BSD_ScrollBox.extent = %x-6 SPC %y - (getword(TMBI_ScrollBox.getextent(), 1) + 84);
 		// %pos_x =    3 + ((getWord(BSD_Window.extent, 0) - 634) / 2);
 		// %pos_y = getWord(TMBI_ScrollBox.position, 1);
 		// %ext_x = getWord(TMBI_ScrollBox.extent, 0);
@@ -181,12 +181,12 @@ function BSD_onResize::onResize(%this)
 	BSD_InvBox.position = 3 SPC %y-59;
 
 	%scrollExt = BSD_ScrollBox.extent;
-
-    for(%i = 0; %i < $BSD_numCategories; %i++)
-    {
-        %cat = $BSD_category[%i];
-        %cat.box.extent = %x-6 SPC 6;
-        //%cat.scroll.extent = %x-6 SPC %y-117;
+	
+	for(%i = 0; %i < $BSD_numCategories; %i++)
+	{
+		%cat = $BSD_category[%i];
+		%cat.box.extent = %x-6 SPC 6;
+		//%cat.scroll.extent = %x-6 SPC %y-117;
 		%cat.scroll.extent = %scrollExt;
 
 		%box = %cat.box;
@@ -228,7 +228,7 @@ function BSD_onResize::onResize(%this)
 		%box.resize(0, 0, %x-6, getWord(%box.extent, 1));
     }
 
-    BSD_DoneButton.position = 566 SPC %y - 52;
+	BSD_DoneButton.position = 566 SPC %y - 52;
 	BSD_ClearBtn.position   = 5 SPC %y - 69;
 	BSD_Window.pushToBack(BSD_DoneButton);
 	BSD_Window.pushToBack(BSD_ClearBtn);
@@ -244,7 +244,7 @@ function BSD_LoadBricks()
 	%group = new SimGroup(BSD_Group){};
 	RootGroup.add(%group);
 	$BSD_numCategories = 0;
-    %brickCount = 0;
+	%brickCount = 0;
 	%dbCount = getDataBlockGroupSize(); // getMin(getDataBlockGroupSize(), 10000); // getDataBlockGroupSize() only works correctly as the host / before ghosting
 
 	for(%i = 0; %i < %dbCount; %i++)
@@ -258,8 +258,8 @@ function BSD_LoadBricks()
 			%uiName = %db.uiName;
 			if (%cat !$= "" && %subCat !$= "" && %uiName !$= "")
 			{
-                %brick[%brickCount] = %db;
-                %brickCount++;
+				%brick[%brickCount] = %db;
+				%brickCount++;
 				BSD_addCategory(%cat);
 				%subCatObj = BSD_addSubCategory(%cat, %subCat);
 				%subCatObj.numBricks = %subCatObj.numBricks + 1.0;
@@ -339,10 +339,10 @@ function BSD_LoadBricks()
 	BSD_Window.pushToBack(BSD_ClearBtn);
 	BSD_ShowTab(0);
 
-    if(!isObject(BSD_onResize))
-        new GuiMLTextCtrl(BSD_onResize) { profile = GuiMLTextProfile; };
-    BSD_Window.add(BSD_onResize);
-    BSD_Window.resize = BSD_onResize;
+	if(!isObject(BSD_onResize))
+		new GuiMLTextCtrl(BSD_onResize) { profile = GuiMLTextProfile; };
+	BSD_Window.add(BSD_onResize);
+	BSD_Window.resize = BSD_onResize;
 
 	$BSD::FirstResize = 0;
 }
@@ -367,7 +367,7 @@ function BSD_CreateBrickButton(%data)
 	if(!isFile(%brickIcon @ ".png"))
 		%brickIcon = "base/client/ui/brickIcons/unknown";
 
-    %extent = %catObj.box.extent;
+	%extent = %catObj.box.extent;
 
 	%offsetX = 18; //18;
 	%offsetY = 18; //18;
@@ -376,7 +376,7 @@ function BSD_CreateBrickButton(%data)
 	%countPerLine = mFloor((firstWord(BSD_ScrollBox.extent - 16) - %offsetX * 2) / %scale);
 
 
-    %scaleD = %scale+1;
+	%scaleD = %scale+1;
 
 	%box = %catObj.box;
 	%count = %subCatObj.numBrickButtons;
@@ -444,7 +444,7 @@ function BSD_createSubHeadings(%cat)
 	%countPerLine = mFloor((firstWord(BSD_ScrollBox.extent) - 18*2) / %scale);
 
 	%box = %cat.box;
-    for(%i = 0; %i < %cat.numSubCategories; %i++)
+	for(%i = 0; %i < %cat.numSubCategories; %i++)
 	{
 		%subCatObj = %cat.subCategory[%i];
 
