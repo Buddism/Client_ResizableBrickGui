@@ -1,0 +1,121 @@
+//--- OBJECT WRITE BEGIN ---
+if(isObject(BSD_window_ResizerCtrl))
+    BSD_window_ResizerCtrl.delete();
+
+if(isObject(BSD_window_Resizer))
+    BSD_window_Resizer.delete();
+
+if(isObject(BSD_Resizer_Text))
+    BSD_Resizer_Text.delete();
+
+if(isObject(BSD_Resizer_Slider))
+    BSD_Resizer_Slider.delete();
+
+//pushDialog
+//popDialog
+
+
+new GuiControl(BSD_window_ResizerCtrl)
+{
+    profile = "GuiDefaultProfile";
+    horizSizing = "right";
+    vertSizing = "bottom";
+    position = "0 0";
+    extent = "190 120";
+    minExtent = "8 2";
+    enabled = "1";
+    visible = "1";
+    clipToParent = "1";
+
+    new GuiWindowCtrl(BSD_window_Resizer) {
+       profile = "GuiWindowProfile";
+       horizSizing = "right";
+       vertSizing = "bottom";
+       position = "0 0";
+       extent = "190 80";
+       minExtent = "8 2";
+       enabled = "1";
+       visible = "1";
+       clipToParent = "1";
+       text = "Brick Selector Resizer";
+       maxLength = "255";
+       resizeWidth = "0";
+       resizeHeight = "0";
+       canMove = "1";
+       canClose = "1";
+       canMinimize = "0";
+       canMaximize = "0";
+       minSize = "50 50";
+       closeCommand = "canvas.popdialog(BSD_window_ResizerCtrl);";
+
+       new GuiTextEditCtrl(BSD_Resizer_Text) {
+          profile = "GuiTextEditProfile";
+          horizSizing = "right";
+          vertSizing = "bottom";
+          position = "114 36";
+          extent = "64 18";
+          minExtent = "8 2";
+          enabled = "1";
+          visible = "1";
+          clipToParent = "1";
+          maxLength = "255";
+          historySize = "0";
+          password = "0";
+          tabComplete = "0";
+          sinkAllKeyEvents = "0";
+
+          command = "BSD_Resizer_Text();";
+       };
+       new GuiSliderCtrl(BSD_Resizer_Slider) {
+          profile = "GuiSliderProfile";
+          horizSizing = "right";
+          vertSizing = "bottom";
+          position = "9 34";
+          extent = "102 32";
+          minExtent = "8 2";
+          enabled = "1";
+          visible = "1";
+          clipToParent = "1";
+          range = "-2.000000 2.000000";
+          ticks = "10";
+          value = "0";
+          snap = "0";
+
+          //update the #
+          command = "BSD_Resizer_Text(BSD_Resizer_Slider.getValue());";
+       };
+    };
+};
+
+BSD_Resizer_Text.setValue($Pref::BSD::Scale);
+BSD_Resizer_Slider.setValue($Pref::BSD::Scale);
+//--- OBJECT WRITE END ---
+
+function BSD_Resizer_Text(%value)
+{
+    %gui = nameToID("BSD_Resizer_Text");
+    if(!isObject(%gui))
+        return;
+    if(%value $= "")
+        %text = %gui.getValue();
+    else %text = %value;
+
+    %gui.setValue(stripCharsInv(%text, "1234567890-."));
+    BSD_Resizer_Slider.setValue(%gui.getValue());
+    $Pref::BSD::Scale = %gui.getValue();
+
+    //resize the gui
+    BSD_onResize.onResize();
+}
+
+
+if ($_byte_list $= "") //https://forum.blockland.us/index.php?topic=272459.0
+	for ($_i = 1; $_i < 256; $_i++)
+	{
+		$_byte_map[$_i] = collapseEscape("\\x" @ getSubStr("0123456789abcdef", $_i >> 4, 1) @ getSubStr("0123456789abcdef", $_i & 15, 1));
+		$_byte_list = $_byte_list @ $_byte_map[$_i];
+	}
+function stripCharsInv(%string, %char)
+{
+	return stripChars(%string, stripChars($_byte_list, %char));
+}
