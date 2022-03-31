@@ -183,7 +183,7 @@ function BSD_onResize::onResize(%this, %noResize)
 	if(%tmbi)
 	{
 		 //            + 59 + 20 + 5; //= 59(box) + 20(space at bottom) + 156(tmbi scale) + 5 offset
-    	BSD_ScrollBox.extent = %x-6 SPC %y - (getword(TMBI_ScrollBox.getextent(), 1) + 84);
+    	BSD_ScrollBox.extent = %x-6 SPC %y - (getWord(TMBI_ScrollBox.getExtent(), 1) + 84);
 		// %pos_x =    3 + ((getWord(BSD_Window.extent, 0) - 634) / 2);
 		// %pos_y = getWord(TMBI_ScrollBox.position, 1);
 		// %ext_x = getWord(TMBI_ScrollBox.extent, 0);
@@ -515,22 +515,22 @@ package tmbi
 		parent::onwake(%this, %idk);
 		tmbi_firsttimeinit();
 
-		if(getword(BSD_Window.getextent(), 1) > getword(playgui.getextent(), 1))
+		if(getWord(BSD_Window.getExtent(), 1) > getWord(playgui.getExtent(), 1))
 		{
 			tmbi_debug("oh dear, your pitifully small screen can't handle the awesome.");
-			BSD_Window.resize(getword(BSD_Window.getposition(),0), 0, 640, getword(playgui.getextent(), 1));
+			BSD_Window.resize(getWord(BSD_Window.getPosition(),0), 0, 640, getWord(playgui.getExtent(), 1));
 		}
 
 		if($tmbi_closepos !$= "")
 		{
 			tmbi_Debug("Last close position at: "@ $tmbi_closepos);
-			//BSD_Window.resize(getword($tmbi_closepos, 0), getword($tmbi_closepos, 1), 640, getword(BSD_Window.getextent(), 1));
+			//BSD_Window.resize(getWord($tmbi_closepos, 0), getWord($tmbi_closepos, 1), 640, getWord(BSD_Window.getExtent(), 1));
 		}
 
-		if(getword(BSD_Window.getposition(), 1) < 0)
+		if(getWord(BSD_Window.getPosition(), 1) < 0)
 		{
 			tmbi_debug("repositioning ...");
-			BSD_Window.resize(getword(BSD_Window.getposition(),0), 0, 640, getword(BSD_Window.getextent(), 1));
+			BSD_Window.resize(getWord(BSD_Window.getPosition(),0), 0, 640, getWord(BSD_Window.getExtent(), 1));
 		}
 		TMBI_MainInventory.setvisible(0);
 		//BSD_Window.pushtoback(tmbi_resizer); //this keeps moving around for some reason
