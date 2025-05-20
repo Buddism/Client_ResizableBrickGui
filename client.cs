@@ -4,7 +4,6 @@ exec("./BSD_window_Resizer.gui");
 BSD_Window.resizeWidth = 1;
 BSD_Window.resizeHeight = 1;
 
-
 if($Pref::BSD::Scale $= "")
 	$Pref::BSD::Scale = 0;
 
@@ -15,7 +14,7 @@ $BSD::FirstResize = 0;
 
 function execBrick()
 {
-	exec("config/client/serverCommandgui/functions/BrickSelecterDialog.cs");
+	exec("./client.cs");
 	//bsd_window.extent = "640 480"; BSD_onResize.onResize();
 }
 
